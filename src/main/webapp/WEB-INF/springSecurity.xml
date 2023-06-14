@@ -16,8 +16,8 @@
     <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
-                <security:user name="${ADMIN}" password="{noop}${ADMIN_PASS}" authorities="ROLE_ADMIN" />
-                <security:user name="${USER}" password="{noop}${USER_PASS}" authorities="ROLE_USER" />                
+                <security:user name="#{systemEnvironment['ADMIN']}" password="{noop}#{systemEnvironment['ADMIN_PASS']}" authorities="ROLE_ADMIN" />
+                <security:user name="#{systemEnvironment['USER']}" password="{noop}#{systemEnvironment['USER_PASS']}" authorities="ROLE_USER" />                
             </security:user-service>
         </security:authentication-provider>
     </security:authentication-manager>
