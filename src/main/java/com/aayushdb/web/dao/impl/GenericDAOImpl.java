@@ -6,11 +6,19 @@
 package com.aayushdb.web.dao.impl;
 
 import com.aayushdb.web.dao.GenericDAO;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -44,12 +52,17 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
     }
     
     @Override
-    @Deprecated
     @SuppressWarnings (value="unchecked")
     public List<T> getAll() {
         startSession();
-        return session.createCriteria(persistClass)
-                .list();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<?> cr = cb.createQuery(persistClass);
+        Root<?> root = cr.from(persistClass);   
+        ((CriteriaQuery<T>)(cr)).select((Selection<T>)root);
+
+        Query<?> query = session.createQuery(cr);
+        List<?> results = query.getResultList();
+        return (List<T>) results;
     }
     
     @Override
