@@ -6,10 +6,17 @@
 package com.aayushdb.web.controller;
 
 import com.aayushdb.web.entity.Customer;
-import org.hibernate.Criteria;
+
+import java.util.List;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author dell
  */
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/home")
 public class DefaultController {
 
     @Autowired
@@ -31,12 +38,20 @@ public class DefaultController {
     private Session session;
 
     @RequestMapping(method = RequestMethod.GET)
-    @Deprecated
+    
     public String index(Model model) {
         session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(Customer.class);
-        criteria.add(Restrictions.eq("id", 2));
-        model.addAttribute("customers", criteria.list());
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
+        Root<Customer> root = criteriaQuery.from(Customer.class);
+
+        Predicate idPredicate = criteriaBuilder.equal(root.get("id"), 2);
+        criteriaQuery.where(idPredicate);
+
+        TypedQuery<Customer> query = session.createQuery(criteriaQuery);
+        List<Customer> customers = query.getResultList();
+
+        model.addAttribute("customers", customers);
         return "/index";
     }
 
