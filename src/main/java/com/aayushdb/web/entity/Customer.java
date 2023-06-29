@@ -63,7 +63,7 @@ public class Customer {
         this.contactNo = contactNo;
         this.addedDate = null;
         this.modifiedDate =null;
-        this.status = false;
+        this.status = status;
     }
 
     public int getId() {
