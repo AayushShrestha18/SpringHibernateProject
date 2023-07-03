@@ -8,14 +8,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a id="dashboardLink" class="navbar-brand" href="${SITE_URL}/admin/dashboard">CMS</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
+        <li id="customerLink"><a href="${SITE_URL}/admin/customers">Customers<span class="sr-only">(current)</span></a></li>
+        <li id="mailtemplatesLink"><a href="${SITE_URL}/admin/mailtemplates">Mail Templates</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -38,14 +38,28 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"/> <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog">
+              <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="${SITE_URL}/admin/logout"><span class="glyphicon glyphicon-off"/> Logout</a></li>
+            <li><a href="${SITE_URL}/admin/logout"><span class="glyphicon glyphicon-off"> Logout</a></li>
           </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+<script>
+  var currentUrl = window.location.pathname;
+  var currentUrl = currentUrl.substring(currentUrl.lastIndexOf('admin/') + 1);
+  if(currentUrl.includes("customers")) {
+    document.getElementById("customerLink").className = "active";
+  } else if(currentUrl.includes("mailtemplates")) {
+    document.getElementById("mailtemplatesLink").className = "active";
+  } else if(currentUrl.includes("dashboard")) {
+    var dashboardLink = document.getElementById("dashboardLink");
+    dashboardLink.style.color = "#FFFFFF";
+    dashboardLink.style.backgroundColor = "#080808";
+  }
+</script>
